@@ -1,10 +1,7 @@
 package main
 
 import (
-	"bike-website/controller"
-	"net/http"
-
-	"github.com/gorilla/mux"
+	"bike-website/routes"
 )
 
 func main() {
@@ -35,12 +32,6 @@ func main() {
 
 	// // Your application logic goes here.
 
-	r := mux.NewRouter()
-	r.HandleFunc("/new-bike", controller.Demo).Methods("POST")
-
-	http.Handle("/", r)
-
-	// Start the HTTP server
-	http.ListenAndServe(":9090", nil)
+	routes.NewBike()
 
 }

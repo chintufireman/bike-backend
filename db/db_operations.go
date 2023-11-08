@@ -1,8 +1,9 @@
 package db
 
 import (
-	"context"
 	"bike-website/model"
+	"context"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -10,7 +11,7 @@ func InsertNewBikeDetails(bike *model.Bike) (string, error) {
 	client, err := InitDatabase()
 
 	if err != nil {
-		return "INTERNAL ISSUE OCCURED DURING DATA INSERTATION", err
+		return "INTERNAL ISSUE OCCURED DURING DATA CONNECTION", err
 	}
 	defer client.Disconnect(context.Background())
 
@@ -27,5 +28,5 @@ func InsertNewBikeDetails(bike *model.Bike) (string, error) {
 		return "", err
 	}
 
-	return "User inserted successfully with Id" + id.InsertedID.(string), nil
+	return "User inserted successfully with Id " + id.InsertedID.(primitive.ObjectID).Hex(), nil
 }

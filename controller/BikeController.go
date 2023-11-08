@@ -28,6 +28,9 @@ func HandleNewBikeData(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
 }
+
+
+
 func Demo(w http.ResponseWriter, r *http.Request)  {
 	var data *model.Bike
 	data = &model.Bike{}

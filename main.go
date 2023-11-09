@@ -5,7 +5,8 @@ import (
 )
 
 func main() {
-	
+
 	routes.NewBike()
+	routes.FetchAllBikes()
 
 }

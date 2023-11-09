@@ -29,15 +29,28 @@ func HandleNewBikeData(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-
-
-func Demo(w http.ResponseWriter, r *http.Request)  {
+func Demo(w http.ResponseWriter, r *http.Request) {
 	var data *model.Bike
 	data = &model.Bike{}
 
 	json.NewDecoder(r.Body).Decode(data)
-	response:=data
+	response := data
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(response)
+}
+
+func HandleFetchAllBike(w http.ResponseWriter, r *http.Request) {
+	var data []*model.Bike
+	data, err := db.FetchAllBikes()
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	response := data
+	w.Header().Set("Content-type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
 }

@@ -44,4 +44,5 @@ type Bike struct {
 	DigitalFuelGauge              string `json:"digitalFuelGauge"`
 	Tachometer                    string `json:"tachometer"`
 	StandAlarm                    string `json:"standAlarm"`
+	Image                         Image  `json:"Image"`
 }

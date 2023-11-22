@@ -3,9 +3,13 @@ package db
 import (
 	"bike-website/model"
 	"context"
+	"errors"
+	
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func InsertNewBikeDetails(bike *model.Bike) (string, error) {
@@ -78,12 +82,12 @@ func UploadImageData(image *model.Image) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	
+
 	return "Image inserted successfully with Id " + id.InsertedID.(primitive.ObjectID).Hex(), nil
 
 }
 
-func FetchImage() ([]byte, error) {
+func FetchImage() ([]*model.Bike, error) {
 	client, err := InitDatabase()
 
 	if err != nil {
@@ -94,18 +98,30 @@ func FetchImage() ([]byte, error) {
 	collection := client.Database("Bike").Collection("bike-details")
 
 	filter := bson.M{}
-	cursor, err := collection.Find(ctx, filter)
+	projection := bson.M{"image": 1} // Include only the 'image' field
+
+	cursor, err := collection.Find(ctx, filter, options.Find().SetProjection(projection))
 	if err != nil {
 		return nil, err
 	}
 	defer cursor.Close(ctx)
-	var image model.Image
-    if cursor.Next(ctx) {
-        if err := cursor.Decode(&image); err != nil {
-            return nil, err
-        }
-        return image.Data, nil
-    }
 
-	return image.Data,nil
+	var images []*model.Bike
+
+	for cursor.Next(ctx) {
+		var image *model.Bike
+		image = &model.Bike{}
+		
+		if err := cursor.Decode(&image); err != nil {
+			return nil, err
+		}
+		// fmt.Println(reflect.ValueOf(image))
+		images = append(images, image)
+	}
+
+	if len(images) == 0 {
+		return nil, errors.New("No documents found with image field")
+	}
+	
+	return images, nil
 }

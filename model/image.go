@@ -1,5 +1,5 @@
 package model
 
 type Image struct {
-	Data     []byte
+	Data []byte `bson:"data"`
 }

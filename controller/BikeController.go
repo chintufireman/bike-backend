@@ -20,11 +20,11 @@ func HandleNewBikeData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//accessing Json data
-	jsonField:=r.FormValue("jsonField")
+	jsonField := r.FormValue("jsonField")
 	fmt.Println(jsonField)
 	var bikeData *model.Bike
-	bikeData=&model.Bike{}
-	error:=json.Unmarshal([]byte(jsonField), bikeData)
+	bikeData = &model.Bike{}
+	error := json.Unmarshal([]byte(jsonField), bikeData)
 	if error != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -117,16 +117,20 @@ func HandleImageData(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleFetchImage(w http.ResponseWriter, r *http.Request) {
-	data, err := db.FetchImage()
+	imagedata, err := db.FetchImage()
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	_, err = w.Write(data)
-	if err != nil {
-		http.Error(w, "Error writing image data", http.StatusInternalServerError)
-		return
+	w.Header().Set("Content-Type", "image/jpeg")
+	for _, image := range imagedata {
+		_, resError := w.Write(image.Image.Data)
+		if resError != nil {
+			http.Error(w, "Error writing image data", http.StatusInternalServerError)
+			return
+		}
 	}
+
 }

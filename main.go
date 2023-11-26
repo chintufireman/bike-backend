@@ -7,7 +7,8 @@ import (
 func main() {
 
 	// routes.NewBike()
-	routes.FetchAllBikes()
+	// routes.FetchAllBikes()
 	// routes.UploadImage()
 	// routes.FetchImage()
+	routes.SetupRoutes()
 }

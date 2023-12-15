@@ -1,12 +1,15 @@
-FROM golang:1.21.5-bookworm
+FROM golang:1.21 AS build
 
+WORKDIR /src
 
-WORKDIR /app
+COPY . .
 
-COPY go.mod .
-COPY ./ .
+RUN CGO_ENABLED=0 go build -o bin .
 
-RUN go get
-RUN go build -o bin .
+#second stage
+FROM scratch
 
-ENTRYPOINT [ "/app/bin" ]
+WORKDIR /src
+
+COPY --from=build /src/bin .
+ENTRYPOINT ["/src/bin"]

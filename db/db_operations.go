@@ -4,7 +4,7 @@ import (
 	"bike-website/model"
 	"context"
 	"errors"
-	
+	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -45,6 +45,7 @@ func FetchAllBikes() ([]*model.Bike, error) {
 
 	ctx := context.Background()
 	collection := client.Database("Bike").Collection("bike-details")
+	fmt.Println(collection.Database().Name())
 	filter := bson.M{}
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {

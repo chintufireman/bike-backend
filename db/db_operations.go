@@ -112,7 +112,7 @@ func FetchImage() ([]*model.Bike, error) {
 	for cursor.Next(ctx) {
 		var image *model.Bike
 		image = &model.Bike{}
-		
+
 		if err := cursor.Decode(&image); err != nil {
 			return nil, err
 		}
@@ -123,6 +123,29 @@ func FetchImage() ([]*model.Bike, error) {
 	if len(images) == 0 {
 		return nil, errors.New("No documents found with image field")
 	}
-	
+
 	return images, nil
+}
+
+func FetchOneBikeDetails(name string) (*model.Bike, error) {
+	client, err := InitDatabase()
+	if err != nil {
+		return nil, err
+	}
+	
+	collection := client.Database("Bike").Collection("bike-details")
+	defer client.Disconnect(context.Background())
+	ctx := context.Background()
+	filter:=bson.D{{"name",name}}
+	var bikeDetails model.Bike = model.Bike{};
+	var bikeDetailsPtr *model.Bike
+	bikeDetailsPtr=&bikeDetails
+
+	err2:=collection.FindOne(ctx,filter).Decode(bikeDetailsPtr)
+	if err2==mongo.ErrNoDocuments {
+		fmt.Println("No matching documents found")
+		return nil,err2
+	}
+
+	return bikeDetailsPtr,nil
 }

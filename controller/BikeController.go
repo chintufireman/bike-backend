@@ -132,5 +132,19 @@ func HandleFetchImage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+}
+
+func HandleFetchOneBikeDetail(w http.ResponseWriter, r *http.Request) {
+	bikeName := r.URL.Query().Get("bikename")
+	bikedetails, err := db.FetchOneBikeDetails(bikeName)
+
+	if err != nil {
+		http.Error(w, "Some error occured for fetching bike info", http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(bikedetails)
 
 }

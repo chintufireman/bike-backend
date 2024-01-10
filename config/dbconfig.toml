@@ -1,0 +1,3 @@
+#configs for database
+DatabaseURL="mongodb+srv://chintufireman:root@cluster0.0we6dlo.mongodb.net/?retryWrites=true&w=majority"
+# DatabaseURL="mongodb://localhost:27017/"

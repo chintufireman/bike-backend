@@ -1,11 +1,16 @@
 package main
 
 import (
+	
 	"bike-website/routes"
+
 )
 
-func main() {
 
+
+
+
+func main() {
 	// routes.NewBike()
 	// routes.FetchAllBikes()
 	// routes.UploadImage()

@@ -1,7 +1,9 @@
 package db
 
 import (
+	"bike-website/config"
 	"context"
+	"fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -10,8 +12,8 @@ import (
 
 func InitDatabase() (*mongo.Client, error) {
 	// Define the MongoDB connection string
-	connectionURI := "mongodb://localhost:27017"
-
+	connectionURI := config.Appconfig.DatabaseURL
+	fmt.Println(connectionURI)
 	// Set up the client options
 	clientOptions := options.Client().ApplyURI(connectionURI)
 

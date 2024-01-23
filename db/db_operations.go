@@ -45,8 +45,10 @@ func FetchAllBikes() ([]*model.Bike, error) {
 
 	ctx := context.Background()
 	collection := client.Database("Bike").Collection("bike-details")
-	fmt.Println(collection.Database().Name())
+	// fmt.Println(collection.Database().Name())
+	
 	filter := bson.M{}
+	fmt.Println(client.ListDatabaseNames(ctx,filter))
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {
 		return nil, err

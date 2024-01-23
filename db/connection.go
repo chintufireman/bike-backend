@@ -1,7 +1,6 @@
 package db
 
 import (
-	"bike-website/config"
 	"context"
 	"fmt"
 	"log"
@@ -12,7 +11,8 @@ import (
 
 func InitDatabase() (*mongo.Client, error) {
 	// Define the MongoDB connection string
-	connectionURI := config.Appconfig.DatabaseURL
+	// connectionURI := config.Appconfig.DatabaseURL
+	connectionURI := "mongodb://mongodb-bike-container:27017/"
 	fmt.Println(connectionURI)
 	// Set up the client options
 	clientOptions := options.Client().ApplyURI(connectionURI)

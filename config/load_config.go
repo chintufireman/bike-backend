@@ -26,6 +26,6 @@ func LoadConfig() (*Config, error) {
 	if err := viper.Unmarshal(&cfg); err != nil {
 		return nil, err
 	}
-	
+	fmt.Println(&cfg)
 	return &cfg, nil
 }

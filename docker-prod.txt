@@ -1,7 +1,7 @@
 version: '3.1'
 
 services:
- # MongoDB Service
+  # MongoDB Service
   mongodb:
     image: mongo:latest
     container_name: mongodb-bike-container
@@ -10,7 +10,9 @@ services:
     networks:
       - bikenetwork
     volumes:
-      - database-data:/data/db
+      - type: bind
+        source: ./data
+        target: /data/db
 
   # Next.js Frontend Service
   frontend:
@@ -27,7 +29,7 @@ services:
     networks:
       - bikenetwork
 
-   # Go Backend Service
+  # Go Backend Service
   backend:
     build:
       context: ./bike-backend
@@ -40,12 +42,11 @@ services:
     networks:
       - bikenetwork
 
-
 networks:
   bikenetwork:
     driver: bridge
 
-volumes:
-  database-data:
-    driver: local
+#volumes:
+#  database-data:
+#    driver: local
 
